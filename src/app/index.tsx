@@ -1,60 +1,36 @@
-
-import {View,Text,StyleSheet, FlatList , TextInput, Button} from 'react-native';
-import FoodListItem from   '../components/FoodListItem';
-import { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
-
-const query = gql`
-query search($ingr: String) {
-  search(ingr: $ingr) {
-    text
-    hints {
-      food {
-        label
-        brand
-        foodId
-        nutrients {
-          ENERC_KCAL
-        }
-      }
-    }
-  }
-}
-`;
-
- const foodItems = [
-  { label: 'Pizza' , cal: 75, brand: 'Dominos'},
-  { label: 'Rice', cal:150, brand: 'parl'},
-  { label: 'Coffee', cal:100, brand: 'Cappuccino'},
- ];
-
-export default function SearchScreen(){
-
-  const [search, setSearch] = useState('');
-
-
-
-
-  const performSearch = () => {
-    console.warn('Searching for:' , search);
-    setSearch('');
-  };
+import { Link } from 'expo-router';
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  StyleSheet,
   
-  return(
-    <View style={styles.container}>
-      <TextInput 
-        value={search} 
-        onChangeText={setSearch}
-        placeholder='Search...' 
-        style={styles.input}
-      />
-      {search && <Button title="Search" onPress={ performSearch }/>}
+} from 'react-native';
+import { gql, useQuery } from '@apollo/client';
+import FoodListItem from '../components/FoodListItem';
+const foodItems = [
 
+];
+export default function HomeScreen(){
+  return (
+    <View style={styles.container}>
+      <View style={styles.headerRow}>
+        <Text style={styles.subtitle}>Calories</Text>
+        <Text> 1770 - 360 = 1692</Text>
+      </View>
+
+      <View style={styles.headerRow}>
+        <Text style={styles.subtitle}>Today's food</Text>
+        <Link href="/search" asChild>
+          <Button title="ADD FOOD" />
+        </Link>
+      </View>
       <FlatList
         data={foodItems}
-        renderItem={({item})=> <FoodListItem item={item}/>}
-        contentContainerStyle={{gap: 5 }}
-      /> 
+        contentContainerStyle={{ gap: 5 }}
+        renderItem={({ item }) => <FoodListItem item={item} />}
+      />
     </View>
   );
 }
@@ -66,10 +42,15 @@ const styles = StyleSheet.create({
     padding: 10,
     gap: 10,
   },
-  input: {
-    backgroundColor: '#f2f2f2',
-    padding:10,
-    borderRadius:20,
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-
+  subtitle: {
+    fontSize: 18,
+    fontWeight: '500',
+    flex: 1,
+    color: 'dimgray',
+  },
 });
