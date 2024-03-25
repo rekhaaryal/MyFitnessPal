@@ -6,6 +6,7 @@ const FoodListItem = ({ item }) => {
   return(
     <View
      style={{
+      
       backgroundColor: '#f6f6f8',
       padding: 10,
       borderRadius: 5,
